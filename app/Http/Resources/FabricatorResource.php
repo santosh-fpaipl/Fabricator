@@ -18,7 +18,7 @@ class FabricatorResource extends JsonResource
         //return parent::toArray($request);
 
         return [
-            "id" => $this->id,
+            "id" => $this->viar ? $this->id : '',
             "sid" => $this->sid,
             "name" => $this->user->name,
             "email" => $this->user->email,

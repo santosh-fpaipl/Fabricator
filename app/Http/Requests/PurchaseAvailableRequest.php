@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\BaseRequest;
 
-class PurchaseCreateRequest extends BaseRequest
+class PurchaseAvailableRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,8 +14,7 @@ class PurchaseCreateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'po_sid' => ['required', 'exists:purchases,po_sid'],
-            'so_sids' => ['required', 'string'],
+            'check' => ['nullable', 'in:available'],
         ];
     }
 }

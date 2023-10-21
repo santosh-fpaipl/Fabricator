@@ -21,16 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::name('api.')->group(function () {
-
-    Route::prefix('internal')->group(function () {    
-
-        Route::resource('fabricators', FabricatorProvider::class);
-        
-        Route::get('haspurchase',[ PurchaseProvider::class, 'checkHasPurchase']);
-        
-        Route::resource('purchases', PurchaseProvider::class);
-
-    });
-
+Route::prefix('')->group(function () {    
+    Route::resource('fabricators', FabricatorProvider::class);
+    Route::resource('purchases', PurchaseProvider::class);
 });

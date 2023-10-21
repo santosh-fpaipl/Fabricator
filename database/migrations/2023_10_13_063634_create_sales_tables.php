@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchases', function (Blueprint $table) {
+        Schema::create('sales_tables', function (Blueprint $table) {
             $table->id();
             $table->string('sid')->unique();
-            $table->string('po_sid')->nullable();
+            $table->string('so_sid')->nullable();
             $table->integer('quantity')->default(0); // total of quantities
             $table->json('quantities'); // grid of option & range with qty
-            $table->integer('supplier_id')->default(1);
+            $table->string('purchase_sid')->nullable();
+
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchases');
+        Schema::dropIfExists('sales_tables');
     }
 };

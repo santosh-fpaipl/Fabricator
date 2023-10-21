@@ -17,7 +17,8 @@ class PurchaseResource extends JsonResource
         //return parent::toArray($request);
 
         return [
-            'jwo_sid' => $this->jwo_sid,
+            'id' => $this->viar ? $this->id : '',
+            'po_sid' => $this->po_sid,
         ];
     }
 }

@@ -10,6 +10,12 @@ class Purchase extends Model
     use HasFactory;
 
     protected $fillable =[
-        'jwo_sid',
+        'po_sid',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'po_sid';
+    }
+   
 }
