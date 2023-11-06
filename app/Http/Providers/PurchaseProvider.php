@@ -12,6 +12,7 @@ use App\Http\Requests\PurchaseAvailableRequest;
 use App\Http\Resources\PurchaseResource;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Support\Facades\Log;
+use App\Events\ReloadDataEvent;
 
 class PurchaseProvider extends Provider
 {
@@ -44,14 +45,20 @@ class PurchaseProvider extends Provider
         DB::beginTransaction();
         try{
             $purchase = Purchase::create([
+                'sid' => Purchase::generateId(),
                 'po_sid' => $request->po_sid,
             ]);
             foreach(json_decode($request->so_sids, true) as $so_sid){
-                $response = Http::put('http://192.168.1.133:8003/api/saleorders/'.$so_sid, [
+                $response = Http::put(env('STORE_APP').'/api/saleorders/'.$so_sid, [
                     'pending' => 0,
                 ]);
             }
             Log::info($request);
+
+            //To send the message to pusher
+                ReloadDataEvent::dispatch(env('PUSHER_MESSAGE'));
+            //End of pusher
+
             DB::commit();
         } catch(\Exception $e){
             DB::rollBack();
@@ -85,6 +92,31 @@ class PurchaseProvider extends Provider
         }
         
         return ApiResponse::success(new PurchaseResource($purchase));
+   }
+
+   public function brandPoExist(Request $request){
+
+        if (env('APP_DEBUG')) {
+            Cache::forget('purchaseExist');
+        }
+        $purchaseExist = Cache::remember('purchaseExist', 24 * 60 * 60, function () use($request) {
+            return Purchase::where('po_sid', $request->brandpo_sid)->exists();
+        });
+
+        // // viar = validInternalApiRequest
+        // $viar = $this->reqHasApiSecret($request);
+        // if($viar){
+        //     $purchaseExist->viar = true;
+        // }
+
+        if($purchaseExist){
+            return ApiResponse::success(['available' => true]);
+        } else {
+            return ApiResponse::error('Not found.', 404);
+        }
+
+        
+        
    }
    
 }

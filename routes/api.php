@@ -24,4 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('')->group(function () {    
     Route::resource('fabricators', FabricatorProvider::class);
     Route::resource('purchases', PurchaseProvider::class);
+
+    Route::get('purchase/poexist', [PurchaseProvider::class, 'brandPoExist'] );
 });

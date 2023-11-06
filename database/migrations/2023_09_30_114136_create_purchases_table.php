@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('sid')->unique();
             $table->string('po_sid')->nullable();
-            $table->integer('quantity')->default(0); // total of quantities
-            $table->json('quantities'); // grid of option & range with qty
-            $table->integer('supplier_id')->default(1);
+            // $table->integer('quantity')->default(0); // total of quantities
+            // $table->json('quantities'); // grid of option & range with qty
+            // $table->integer('supplier_id')->default(1);
             $table->timestamps();
         });
     }

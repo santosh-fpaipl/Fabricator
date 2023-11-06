@@ -14,7 +14,7 @@ class PurchaseCreateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'po_sid' => ['required', 'exists:purchases,po_sid'],
+            'po_sid' => ['required', 'string'],
             'so_sids' => ['required', 'string'],
         ];
     }
